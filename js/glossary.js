@@ -3144,25 +3144,27 @@ function FindValue(val) {
 
         searched[e].push({ heading: heading, text: text })
       }
-      const secondVal = val.replaceAll('й', 'и')
-      if ((f.heading.toLowerCase()).includes(secondVal.toLowerCase()) || (f.text.toLowerCase()).includes(secondVal.toLowerCase())) {
-        if (!searched[e]) searched[e] = []
+      if (val.includes('й')) {
+        const secondVal = val.replaceAll('й', 'и')
+        if ((f.heading.toLowerCase()).includes(secondVal.toLowerCase()) || (f.text.toLowerCase()).includes(secondVal.toLowerCase())) {
+          if (!searched[e]) searched[e] = []
 
-        function highlightWord(text, word) {
-          if (!word) return text;
+          function highlightWord(text, word) {
+            if (!word) return text;
 
-          const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-          const regex = new RegExp(`(?<!<[^>]*)${escapedWord}`, 'gi');
+            const escapedWord = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(?<!<[^>]*)${escapedWord}`, 'gi');
 
-          return text.replace(regex, match =>
-            `<span class="blue-text">${match}</span>`
-          );
+            return text.replace(regex, match =>
+              `<span class="blue-text">${match}</span>`
+            );
+          }
+
+          let heading = highlightWord(f.heading, secondVal)
+          let text = highlightWord(f.text, secondVal)
+
+          searched[e].push({ heading: heading, text: text })
         }
-
-        let heading = highlightWord(f.heading, secondVal)
-        let text = highlightWord(f.text, secondVal)
-
-        searched[e].push({ heading: heading, text: text })
       }
     })
   })
